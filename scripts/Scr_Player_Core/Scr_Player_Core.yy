@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"Scr_Player_Core",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"Scr_Player_Core",
+  "parent":{
+    "name":"Core",
+    "path":"folders/Scripts/Player/Core.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

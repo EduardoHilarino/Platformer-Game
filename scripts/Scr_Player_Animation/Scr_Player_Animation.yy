@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"Scr_Player_Animation",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"Scr_Player_Animation",
+  "parent":{
+    "name":"Visual",
+    "path":"folders/Scripts/Player/Visual.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
