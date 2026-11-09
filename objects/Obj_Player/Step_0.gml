@@ -30,6 +30,10 @@
 
     // * Remember Previous Velocity For Turn Animation *
     var _previous_vx = core_player.vx;
+	
+	// * Remember Previous Vertical Movement *
+	var _was_grounded = core_player.grounded;
+	var _previous_vy = core_player.vy;
 
     // * Run The Complete Celeste Movement Controller *
     tick(core_player, core_world, _input, 1 / 60);
@@ -38,6 +42,110 @@
     x = core_player.px - core_origin_offset_x;
     y = core_player.py - core_origin_offset_y;
 
+	// * Running And Landing Dust Effects *
+	
+		// Landing Dust
+		if (!_was_grounded && core_player.grounded)
+		{
+		    var _impact_speed = max(0, _previous_vy);
+
+		    if (_impact_speed > 55)
+		    {
+		        var _strength = clamp(_impact_speed / core_player.c.MaxFall, 0, 1);
+
+		        // Left Dust Burst
+		        Scr_Spawn_Dust_Burst(core_player.px - 2, core_player.py - 1, 0, -1, 5, 0.7 + _strength * 0.53);
+
+		        // Right Dust Burst
+		        Scr_Spawn_Dust_Burst(core_player.px + 2, core_player.py - 1, 0, -1, 5, 0.7 + _strength * 0.53);
+		    }
+		}
+	
+		// Running Dust
+		
+		if (core_player.grounded && core_player.state == "normal" && abs(core_player.vx) > 65)
+		{
+			dust_run_timer--;
+			
+			if (dust_run_timer <= 0)
+			{	
+				// Dynamic Particle Frequency 
+				dust_run_timer = (abs(core_player.vx) > 85) ? 6 : 9;
+				
+				// Running Dust Particles
+				repeat (irandom_range(2, 3))	
+				{
+					Scr_Spawn_Dust(core_player.px - sign(core_player.vx) * 3, core_player.py - 1, 1, irandom_range(0.45, 0.65));
+				}
+			}
+		}	
+		
+		else
+		{
+			dust_run_timer = 0;	
+		}
+		
+		// Jumping Dust
+		if (core_player.jump_fx_id > dust_last_jump_id)
+		{
+			var _event = core_player.last_event;
+			
+			// Wall Jump Dust
+			if (_event == "wall jump" || _event == "super wall jump" || _event == "climb jump")
+			{
+				// Direction Away From Wall
+				var _away = sign(core_player.vx);
+				
+				if (_event == "climb jump" || _away == 0)
+				{
+					_away = -core_player.facing;	
+				}
+				
+				// Create Dust Along Wall
+				Scr_Spawn_Dust_Burst(core_player.px - _away * 6, core_player.py - height(core_player) * 0.5, _away, 0, 4, 1);
+			}
+			
+					
+			else
+			{
+				// Ground Jump Dust
+				Scr_Spawn_Dust_Burst(core_player.px, core_player.py - 1, 0, -1, 4, 0.65);
+			}
+		}
+		
+		dust_last_jump_id = core_player.jump_fx_id;
+		
+		// Wall Slide Dust
+		
+		// Detect Wall Slide
+		var _wall_sliding = 
+		core_player.state == "normal" &&
+		!core_player.grounded &&
+		core_player.vy > 12 &&
+		core_player.slide_timer > 0 &&
+		_input.my != 1 &&
+		( _input.mx == core_player.facing ||
+		( _input.mx == 0 && _input.grab)) &&
+		wall_check(core_player, core_world, core_player.facing, 1);
+		
+		// Spawm Wall Dust 
+		if (_wall_sliding)
+		{
+			dust_slide_timer--;
+			
+			if (dust_slide_timer <= 0)
+			{
+				dust_slide_timer = 7;
+				
+				Scr_Spawn_Dust_Burst(core_player.px + core_player.facing * 4, core_player.py - 5, -core_player.facing, 0, 2, 0.5);
+			}
+				
+		}
+		
+		else
+		{
+			dust_slide_timer = 0;	
+		}
 
  // ** 4. Player Animation **
 
@@ -51,7 +159,7 @@
 
     // * Detect Turn Animation *
     var _turn_requested = 
-	(core_player.grounded && !core_turning && !_pushing_wall && _direction_changed && abs(_previous_vx) > 20);
+	(core_player.state != "climb" && core_player.grounded && !core_turning && !_pushing_wall && _direction_changed && abs(_previous_vx) > 20);
 
 	if (_turn_requested)
 	{
@@ -83,43 +191,201 @@
         core_turning = false;
     }
 	
+	else if (core_player.state == "climb")
+	{
+		_visual_state = PlayerState.CLIMB;
+		core_turning = false;
+	}
+	
     else if (!core_player.grounded)
     {
         _visual_state = (core_player.vy < 0)
             ? PlayerState.JUMP
             : PlayerState.FALL;
     }
+	
     else if (core_turning)
     {
         _visual_state = PlayerState.TURN;
     }
+	
     else if (_pushing_wall)
     {
         _visual_state = PlayerState.IDLE;
     }
+	
     else if (_input.mx != 0 && abs(core_player.vx) > 5)
     {
         _visual_state = PlayerState.RUN;
     }
 
-    // * Update Sprite Only When State Changes *
-    if (state != _visual_state)
-    {
-        state = _visual_state;
-        Scr_Player_Animation(state);
-    }
+    // * Update Sprite Only When The Visual State Changes *
+	if (state != _visual_state)
+	{
+	    // * Restore Animation Speed After Climbing *
+	    if (state == PlayerState.CLIMB)
+	    {
+	        image_speed = 1;
+	    }
+
+	    state = _visual_state;
+	    Scr_Player_Animation(state);
+	}
+	
+	// * Climb Animation Speed *
+	if (state == PlayerState.CLIMB)
+	{
+		if (core_player.climb_move != 0 && abs(core_player.vy) > 5)
+		{
+			image_speed = 1;
+		}
+		
+		else
+		{
+			image_speed = 0;
+			image_index = 11;
+		}
+	}	
 
 	// * Update Facing Direction *
-	if (state == PlayerState.TURN)
+
+	// ** Squash And Stretch System **
+
+	// * Continuous Movement Deformation *
+	var _target_x = 1;
+	var _target_y = 1;
+
+	if (core_player.state == "dash")
 	{
-	    image_xscale = core_turn_facing;
+	    if (abs(core_player.dash_x) >= abs(core_player.dash_y))
+	    {
+	        _target_x = 1.05;
+	        _target_y = 0.98;
+	    }
+		
+	    else
+	    {
+	        _target_x = 0.98;
+	        _target_y = 1.05;
+	    }
+	}
+	
+	else if (core_player.state == "climb")
+	{
+	    _target_x = 1;
+	    _target_y = 1;
+	}
+	
+	else if (!core_player.grounded)
+	{
+	    if (core_player.vy < -35)
+	    {
+	        _target_x = 0.97;
+	        _target_y = 1.05;
+	    }
+		
+	    else if (core_player.vy > 45)
+	    {
+	        _target_x = 0.98;
+	        _target_y = 1.04;
+	    }
+	}
+
+	// * Detect Movement Events *
+	var _jump_started =
+	    squash_was_grounded
+	    && !core_player.grounded
+	    && core_player.vy < -35;
+
+	var _landed = !squash_was_grounded && core_player.grounded && _previous_vy > 40;
+
+	var _dash_started = !squash_was_dashing && core_player.state == "dash" && !core_player.dash_pending;
+
+	// * Event Deformation *
+	var _pulse = false;
+	var _pulse_x = 1;
+	var _pulse_y = 1;
+
+	if (_landed)
+	{
+	    _pulse_x = 1.14;
+	    _pulse_y = 0.88;
+	    _pulse = true;
+
+	    squash_jump_next = false;
+	}
+	
+	else if (_dash_started)
+	{
+	    if (abs(core_player.dash_x) >= abs(core_player.dash_y))
+	    {
+	        _pulse_x = 1.07;
+	        _pulse_y = 0.97;
+	    }
+		
+	    else
+	    {
+	        _pulse_x = 0.97;
+	        _pulse_y = 1.07;
+	    }
+
+	    _pulse = true;
+	    squash_jump_next = false;
+	}
+	
+	else if (_jump_started)
+	{
+	    // * Compress At Jump Launch *
+	    _pulse_x = 1.12;
+	    _pulse_y = 0.90;
+	    _pulse = true;
+
+	    squash_jump_next = true;
+	}
+	
+	else if (squash_jump_next)
+	{
+	    // * Stretch On The Following Frame *
+	    _pulse_x = 0.94;
+	    _pulse_y = 1.10;
+	    _pulse = true;
+
+	    squash_jump_next = false;
+	}
+
+	// * Apply Deformation *
+	if (_pulse)
+	{
+	    squash_x = 1 + (_pulse_x - 1) * squash_intensity;
+	    squash_y = 1 + (_pulse_y - 1) * squash_intensity;
 	}
 	
 	else
 	{
-	    image_xscale = core_player.facing;
+	    _target_x = 1 + (_target_x - 1) * squash_intensity;
+	    _target_y = 1 + (_target_y - 1) * squash_intensity;
+
+	    squash_x = lerp(squash_x, _target_x, 0.25);
+	    squash_y = lerp(squash_y, _target_y, 0.25);
 	}
 
+	// * Apply Visual Scale *
+	if (state == PlayerState.TURN)
+	{
+	    image_xscale = core_turn_facing * squash_x;
+	}
+	
+	else
+	{
+	    image_xscale = core_player.facing * squash_x;
+	}
+
+	image_yscale = squash_y;
+
+	// * Remember Previous States *
+	squash_was_grounded = core_player.grounded;
+	squash_was_dashing = core_player.state == "dash" && !core_player.dash_pending;
+	
 // ** 5. Dash Effects **
 
     // * Detect Dash Launch *
@@ -161,11 +427,11 @@
                 _particle.vsp = (_dy + _side_y * _spread) * _speed;
 
                 // Lifetime
-                _particle.life = irandom_range(50, 70);
+                _particle.life = irandom_range(75, 110);
                 _particle.max_life = _particle.life;
 
                 // Appareance
-                _particle.particle_color = c_white;
+                _particle.particle_color = make_colour_rgb(176, 0, 255 );
                 _particle.particle_alpha = 1;
 
                 // Slow down

@@ -15,3 +15,8 @@ particle_alpha = 1;
 
 // ** Friction **
 friction_amount = 1;
+
+// ** Smoke Appearance **
+
+// * Random Pixel Shape *
+smoke_variant = irandom(3);

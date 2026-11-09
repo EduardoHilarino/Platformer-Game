@@ -50,8 +50,8 @@
 	var _dx = (x_to - x);
 	var _dy = (y_to - y);
 	
-	x += _dx / 25;
-	y += _dy / 25;
+	x += _dx / 15;
+	y += _dy / 15;
 	
 	// Mantem a camera no room
 	x = clamp(x, 0 + view_w_half, room_width-view_w_half);

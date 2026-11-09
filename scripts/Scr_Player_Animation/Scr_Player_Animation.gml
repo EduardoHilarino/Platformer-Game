@@ -42,6 +42,10 @@ function Scr_Player_Animation(_new_state)
             case PlayerState.WIN:
                 _sprite_name = "Spr_Player_win";
                 break;
+				
+			case PlayerState.CLIMB:
+                _sprite_name = "Spr_Player_climb";
+                break;
         }
 
     // ** 3. Apply Animation **

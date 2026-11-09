@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"Scr_Spawn_Dust_Burst",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"Scr_Spawn_Dust_Burst",
+  "parent":{
+    "name":"Visual",
+    "path":"folders/Scripts/Player/Visual.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -10,7 +10,8 @@
 	    FALL,
 	    DEATH,
 	    DASH,
-	    WIN
+		WIN,
+		CLIMB
 	}
 
 // ** 1. Configuration And Initialization **
@@ -169,7 +170,8 @@
 	        use_air_mult: true,
 	        use_jump_boost: true,
 	        use_corrections: true,
-	        use_freeze: true
+	        use_freeze: true,
+			jump_fx_id: 0
 	    };
 	}
 
@@ -385,6 +387,7 @@
 	    _p.vy = _p.c.JumpSpeed;
 	    _p.var_speed = _p.vy;
 	    _p.grounded = false;
+		_p.jump_fx_id++;
 	    _p.last_event = "pulo";
 		
 		// * Jump Sound *
@@ -414,6 +417,7 @@
 	    _p.vy = _super ? _p.c.SuperWallJumpSpeed : _p.c.JumpSpeed;
 	    _p.var_speed = _p.vy;
 	    normal_begin(_p);
+		_p.jump_fx_id++;
 	    _p.last_event = _super ? "super wall jump" : "wall jump";
 		
 		audio_play_sound(Snd_jump, 0, false, 0.3, 0, random_range(0.7, 1));

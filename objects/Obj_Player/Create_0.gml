@@ -28,9 +28,25 @@
 	// * One Way Platform Inicialization *
 		core_player = player_create(x + core_origin_offset_x, y + core_origin_offset_y);
 		
-	// * Disable Wall Speed Retention For Testing *
-		core_player.c.WallSpeedRetentionTime = 0;
-
+	// * Squash And Stretch Inicialization*
+	
+	// Current Visual Scale
+		squash_x = 1;
+		squash_y = 1;
+		
+	// Previous Ground State
+		squash_was_grounded = core_player.grounded;
+	
+	// Animation Smoothness
+		squash_speed = 0.20;
+		
+	// Squash And Stretch Intensity
+		squash_intensity = 2;
+		
+	// * Squash Event Initialization *
+		squash_jump_next = false;
+		squash_was_dashing = false;
+		
 // ** 2. Player Visual Initialization **
 
     // * Initialize Animation State *
@@ -49,7 +65,17 @@
     // * Initialize Dash Effects *
 	    core_last_event = core_player.last_event;
 	    core_dash_trail_counter = 0;
-
+	
+	// * Dust Effects Inicialization *
+		
+	// Running Dust Timer
+		dust_run_timer = 0;
+	// Jumping Dust
+		dust_last_jump_id = core_player.jump_fx_id
+		
+	// Wall Slide Dust Inicialization
+		dust_slide_timer = 0;
+	
 // ** 3. Independent Game Systems **
 
 	
@@ -78,5 +104,4 @@
 	    debug_movement = false;
 	    debug_frame = 0;
 	    debug_last_x = x;
-
 
