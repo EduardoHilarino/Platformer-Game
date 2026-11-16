@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"Scr_Player_respawn",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"Scr_Player_respawn",
+  "parent":{
+    "name":"Utilities",
+    "path":"folders/Scripts/Player/Utilities.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

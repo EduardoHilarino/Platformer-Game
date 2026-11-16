@@ -1,0 +1,12 @@
+{
+  "$GMShader":"",
+  "%Name":"Sh_color_rast",
+  "name":"Sh_color_rast",
+  "parent":{
+    "name":"Shaders",
+    "path":"folders/Shaders.yy",
+  },
+  "resourceType":"GMShader",
+  "resourceVersion":"2.0",
+  "type":1,
+}
