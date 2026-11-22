@@ -36,8 +36,8 @@
   "resourceType":"GMTileSet",
   "resourceVersion":"2.0",
   "spriteId":{
-    "name":"Sprite20",
-    "path":"sprites/Sprite20/Sprite20.yy",
+    "name":"Spr_solid",
+    "path":"sprites/Spr_solid/Spr_solid.yy",
   },
   "spriteNoExport":false,
   "textureGroupId":{

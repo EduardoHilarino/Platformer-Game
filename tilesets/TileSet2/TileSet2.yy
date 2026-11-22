@@ -23,8 +23,8 @@
   "resourceType":"GMTileSet",
   "resourceVersion":"2.0",
   "spriteId":{
-    "name":"Sprite11_1",
-    "path":"sprites/Sprite11_1/Sprite11_1.yy",
+    "name":"Spr_Tileset",
+    "path":"sprites/Spr_Tileset/Spr_Tileset.yy",
   },
   "spriteNoExport":false,
   "textureGroupId":{
