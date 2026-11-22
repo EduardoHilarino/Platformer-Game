@@ -17,7 +17,7 @@
 // ** 1. Configuration And Initialization **
 
 	// Returns Every Movement Constant Used By The Laboratory
-	function constants()
+ 	function constants()
 	{
 	    return 
 		{
@@ -56,7 +56,7 @@
 	        DashSpeed: 240,
 	        EndDashSpeed: 160,
 	        EndDashUpMult: 0.75,
-	        DashTime: 0.15,
+	        DashTime: 0.17,
 	        DashCooldown: 0.2,
 	        DashRefillCooldown: 0.1,
 	        DashAttackTime: 0.3,
