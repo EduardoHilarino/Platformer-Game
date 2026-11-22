@@ -1,3 +1,44 @@
+// ** Dash Particle Draw **
+if (particle_type == 3)
+{
+    var _fade = clamp(life / max(1, max_life), 0, 1);
+
+    draw_set_alpha(particle_alpha * _fade);
+    draw_set_color(particle_color);
+
+    var _px = round(x);
+    var _py = round(y);
+
+    switch (dash_variant)
+    {
+        case 0:
+            // * Small Cluster *
+            draw_rectangle(_px, _py, _px + 1, _py + 1, false);
+            break;
+
+        case 1:
+            // * Horizontal Cluster *
+            draw_rectangle(_px, _py, _px + 2, _py + 1, false);
+            break;
+
+        case 2:
+            // * Vertical Cluster *
+            draw_rectangle(_px, _py, _px + 1, _py + 2, false);
+            break;
+
+        case 3:
+            // * Irregular Cluster *
+            draw_rectangle(_px, _py, _px + 1, _py + 1, false);
+            draw_rectangle(_px + 1, _py - 1, _px + 2, _py, false);
+            break;
+    }
+
+    draw_set_alpha(1);
+    draw_set_color(c_white);
+
+    exit;
+}
+
 // ** 1. Fade Out **
 var _alpha = particle_alpha * (life / max_life);
 

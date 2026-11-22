@@ -1,9 +1,3 @@
-<<<<<<< Updated upstream
-other.win = true;
-
-sprite_index = Spr_goal_win
-other.state = PlayerState.WIN;
-=======
 other.win = true;
 
 sprite_index = Spr_goal_win
@@ -23,4 +17,3 @@ with (Obj_Run_Manager)
 	show_debug_message("Best Deaths: " + string(best_deaths));
 	show_debug_message("New Best Deaths: " + string(new_best_deaths));
 }
->>>>>>> Stashed changes

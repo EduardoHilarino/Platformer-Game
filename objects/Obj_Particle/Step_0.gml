@@ -1,3 +1,5 @@
+
+
 // ** 1. Moviment **
 x += hsp;
 y += vsp;

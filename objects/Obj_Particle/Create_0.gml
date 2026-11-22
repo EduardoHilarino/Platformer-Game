@@ -20,3 +20,4 @@ friction_amount = 1;
 
 // * Random Pixel Shape *
 smoke_variant = irandom(3);
+

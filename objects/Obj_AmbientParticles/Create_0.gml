@@ -5,4 +5,4 @@ spawn_min = 6;
 spawn_max = 12;
 
 // ** Particle Amount **
-particle_limit = 30;
+particle_limit = 50;

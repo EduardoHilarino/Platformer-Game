@@ -28,8 +28,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"Sprite25",
-    "path":"sprites/Sprite25/Sprite25.yy",
+    "name":"Spr_OneWay",
+    "path":"sprites/Spr_OneWay/Spr_OneWay.yy",
   },
   "spriteMaskId":null,
   "visible":true,
