@@ -1,0 +1,12 @@
+{
+  "$GMShader":"",
+  "%Name":"Shd_Player_White",
+  "name":"Shd_Player_White",
+  "parent":{
+    "name":"Shaders",
+    "path":"folders/Shaders.yy",
+  },
+  "resourceType":"GMShader",
+  "resourceVersion":"2.0",
+  "type":1,
+}

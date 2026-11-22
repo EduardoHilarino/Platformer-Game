@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"Scr_string_pad",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"Scr_string_pad",
+  "parent":{
+    "name":"Utilities",
+    "path":"folders/Scripts/Player/Utilities.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
